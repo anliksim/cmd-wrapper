@@ -18,6 +18,11 @@ func Hub(verbose bool) *Cmd {
 	}
 }
 
+// Runs 'hub sync'
+func (e *Cmd) Sync() {
+	cmd.RunCommandWithStdout(hub(e.WorkDir, "sync"), e.verbose)
+}
+
 // Runs 'hub status'
 func (e *Cmd) Status() {
 	cmd.RunCommandWithStdout(hub(e.WorkDir, "status"), e.verbose)
@@ -31,6 +36,11 @@ func (e *Cmd) ShortStatus() {
 // Runs 'hub checkout -B' for the provided branch name
 func (e *Cmd) SwitchBranch(name string) {
 	cmd.RunCommandWithStdout(hub(e.WorkDir, "checkout", "-B", name), e.verbose)
+}
+
+// Runs 'hub [command]' based on the input params
+func (e *Cmd) Exec(command ...string) {
+	cmd.RunCommandWithStdout(hub(e.WorkDir, command...), e.verbose)
 }
 
 func hub(dir string, command ...string) *exec.Cmd {
