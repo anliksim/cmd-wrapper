@@ -7,6 +7,7 @@ import (
 
 // Command structure to wrap hub executions
 type Cmd struct {
+	WorkDir string ""
 	verbose bool
 }
 
@@ -19,19 +20,21 @@ func Hub(verbose bool) *Cmd {
 
 // Runs 'hub status'
 func (e *Cmd) Status() {
-	cmd.RunCommandWithStdout(hub("status"), e.verbose)
+	cmd.RunCommandWithStdout(hub(e.WorkDir, "status"), e.verbose)
 }
 
 // Runs 'hub status -s'
 func (e *Cmd) ShortStatus() {
-	cmd.RunCommandWithStdout(hub("status", "-s"), e.verbose)
+	cmd.RunCommandWithStdout(hub(e.WorkDir, "status", "-s"), e.verbose)
 }
 
 // Runs 'hub checkout -B' for the provided branch name
 func (e *Cmd) SwitchBranch(name string) {
-	cmd.RunCommandWithStdout(hub("checkout", "-B", name), e.verbose)
+	cmd.RunCommandWithStdout(hub(e.WorkDir, "checkout", "-B", name), e.verbose)
 }
 
-func hub(command ...string) *exec.Cmd {
-	return exec.Command("hub", command...)
+func hub(dir string, command ...string) *exec.Cmd {
+	hubCmd := exec.Command("hub", command...)
+	hubCmd.Dir = dir
+	return hubCmd
 }

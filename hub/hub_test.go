@@ -10,6 +10,12 @@ func TestCmd_Status(t *testing.T) {
 	hub.Status()
 }
 
+func TestCmd_Status_Dir(t *testing.T) {
+	hub := Hub(false)
+	hub.WorkDir = "../"
+	hub.Status()
+}
+
 func BenchmarkCmd_Status(b *testing.B) {
 	hub := Hub(false)
 	b.StartTimer()
